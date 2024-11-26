@@ -20,13 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config("SECRET_KEY", default='django-insecure-5l1s^(^zi_%scaor8zxidrv6vh$1+gf)t5jgjvf68ciwdq17x#')
+SECRET_KEY = config(
+    "SECRET_KEY", default='django-insecure-5l1s^(^zi_%scaor8zxidrv6vh$1+gf)t5jgjvf68ciwdq17x#')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=True, cast=bool)
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [item.strip() for item in v.split(',')], default="*")
-
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [
+                       item.strip() for item in v.split(',')], default="*")
 
 
 # Application definition
@@ -38,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    
+    'website',
+    'accounts',
+
 ]
 
 MIDDLEWARE = [
@@ -139,7 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config("EMAIL_HOST", default="smtp4dev")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=False)
-EMAIL_USE_SSL= config("EMAIL_USE_SSL", default=False)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False)
 EMAIL_PORT = config("EMAIL_PORT", cast=int, default=25)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
@@ -147,7 +153,8 @@ EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 
 # django debug toolbar for docker usage
 
-SHOW_DEBUGGER_TOOLBAR = config("SHOW_DEBUGGER_TOOLBAR", cast=bool, default=True)
+SHOW_DEBUGGER_TOOLBAR = config(
+    "SHOW_DEBUGGER_TOOLBAR", cast=bool, default=True)
 
 
 if SHOW_DEBUGGER_TOOLBAR:
@@ -156,4 +163,9 @@ if SHOW_DEBUGGER_TOOLBAR:
     import socket
     # Generate INTERNAL_IPS
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [f"{ip.rsplit('.', 1)[0]}.1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+    INTERNAL_IPS = [
+        f"{ip.rsplit('.', 1)[0]}.1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
+
+
+# using custome user model
+AUTH_USER_MODEL = 'accounts.User'
