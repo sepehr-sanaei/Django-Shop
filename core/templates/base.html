@@ -459,10 +459,12 @@
 
   <!-- JS Implementing Plugins -->
   <script src="{% static '/js/vendor.min.js' %} "></script>
-
+  
   <!-- JS Front -->
   <script src="{% static '/js/theme.min.js' %} "></script>
-
+  <!-- Toastify js and css -->
+  <script src="{% static '/vendor/toastify/toastify.js' %} "></script>
+  <link rel="stylesheet" href="{% static '/vendor/toastify/toastify.css' %} ">
   <!-- JS Plugins Init. -->
   <script>
     (function () {
@@ -568,14 +570,8 @@
   {% block extra_js %}{% endblock extra_js %}
 
 {% block extra_js_no_compress %}{% endblock extra_js_no_compress %}
+
+{% include 'messages.html' %}
 </body>
 
 </html>
-
-
-
-
-
-
-
-
