@@ -20,10 +20,15 @@ class Command(BaseCommand):
         user = User.objects.get(type=UserType.admin.value)
         # List of images
         image_list = [
-            "./images/product1.jpg",
-            "./images/product2.jpg",
-            "./images/product3.jpg",
-            "./images/product4.jpg"
+            "./images/img1.jpg",
+            "./images/img2.jpg",
+            "./images/img3.jpg",
+            "./images/img4.jpg",
+            "./images/img5.jpg",
+            "./images/img6.jpg",
+            "./images/img7.jpg",
+            "./images/img8.jpg",
+
             # Add more image filenames as needed
         ]
 
