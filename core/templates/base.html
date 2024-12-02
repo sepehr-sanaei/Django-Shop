@@ -67,7 +67,7 @@
 
 
                         <li class="nav-item">
-                            <a class="nav-link {% if request.resolver_match.view_name  == 'shop:product-grid' %} active {% endif %}" href="#">لیست محصولات</a>
+                            <a class="nav-link {% if request.resolver_match.view_name  == 'shop:product-grid' %} active {% endif %}" href="{% url 'shop:product_grid' %}">لیست محصولات</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {% if request.resolver_match.view_name  == 'website:about' %} active {% endif %}" href="{% url 'website:about' %}">درباره ما</a>
