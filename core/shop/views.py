@@ -39,9 +39,14 @@ class ShopProductGridView(ListView):
         
         context["total_amount"] = self.get_queryset().count()
         context["categories"] = ProductCategoryModel.objects.all()
-        
+        self.request.session['car'] = 'pride'
         return context
     
 class ShopProductDetailView(DetailView):
     template_name = "shop/product_detail.html"
     queryset = ProductModel.objects.filter(status=ProductStatusType.publish.value)
+    
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        print(self.request.session.get("car"))
+        return context

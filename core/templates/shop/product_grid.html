@@ -233,7 +233,7 @@
                   </a>
                   <!-- End Rating -->
 
-                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">افزودن به سبد خرید</button>
+                  <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill" onclick="addToCart('{{object.id}}')">افزودن به سبد خرید</button>
                 </div>
               </div>
               <!-- End Card -->
@@ -406,4 +406,27 @@ $('#order-by-filter').on('change', function() {
     window.location.href = new_url;
   }
 </script>
+<script>
+  function addToCart(product_id){
+    // console.log(product_id)
+    $.ajax({
+      url: "{% url 'cart:session-add-product' %}",
+      method: "POST",
+      data: {
+        product_id: product_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (response) {
+        $("#total-cart-item-count").text(response.total_quantity);
+        console.log(response);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      }
+    })
+  }
+
+</script>
+
+
 {% endblock extra_js %}
