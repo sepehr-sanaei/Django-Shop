@@ -38,15 +38,15 @@
                   {% if similar_product.is_discounted %}
                   <div class="mb-5">
                     <div class="d-flex align-items-center">
-                      <h3 class="mb-0">{{similar_product.get_show_price}} تومان</h3>
-                      <span class="me-2 formatted-price text-decoration-line-through">{{similar_product.get_show_raw_price}} تومان</span>
+                      <h3 class="mb-0 formatted-price">{{similar_product.get_price}}</h3>
+                      <span class="me-2 formatted-price text-decoration-line-through">{{similar_product.price}}</span>
                     </div>
                   </div>
                   {% else %}
                   <div class="mb-5">
                     <span class="d-block mb-2">قیمت کل:</span>
                     <div class="d-flex align-items-center">
-                      <h3 class="mb-0">{{similar_product.get_show_price}} تومان</h3>
+                      <h3 class="mb-0 formatted-price">{{similar_product.price}}</h3>
                     </div>
                   </div>
                   {% endif %}

@@ -42,6 +42,14 @@ class ProductModel(models.Model):
     class Meta:
         ordering = ["-created_date"]
         
+        
+    def get_price(self):
+        discount_amount = self.price * Decimal(self.discount_percent / 100)
+        discounted_amount = self.price - discount_amount
+        
+        return int(discounted_amount)
+    
+    
     def get_show_price(self):
         discount_amount = self.price * Decimal(self.discount_percent / 100)
         discounted_amount = self.price - discount_amount
