@@ -39,8 +39,29 @@ class ShopProductGridView(ListView):
         
         context["total_amount"] = self.get_queryset().count()
         context["categories"] = ProductCategoryModel.objects.all()
-        self.request.session['car'] = 'pride'
         return context
+    
+
+class ShopProductListView(ListView):
+    template_name = 'shop/product-list.html' 
+    paginate_by = 9
+    
+    def get_queryset(self):
+        queryset = ProductModel.objects.filter(status=ProductStatusType.publish.value)
+        return queryset
+    
+    def get_paginate_by(self, queryset):
+        return self.request.GET.get('page_size', self.paginate_by)
+    
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        
+        context["total_amount"] = self.get_queryset().count()
+        context["categories"] = ProductCategoryModel.objects.all()
+        return context
+
+    
+    
     
 class ShopProductDetailView(DetailView):
     template_name = "shop/product_detail.html"

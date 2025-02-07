@@ -163,7 +163,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/products-list.html">
+                    <a class="nav-link" href="{% url 'shop:product-list' %}">
                       <i class="bi-list"></i>
                     </a>
                   </li>
@@ -182,11 +182,13 @@
                 <div class="card-pinned">
                   <img class="card-img-top" src="{{object.image.url}}" alt="Image Description">
 
+                  {% if request.user.is_authenticated %}
                   <div class="card-pinned-top-end">
                     <button type="button" class="btn btn-outline-secondary btn-xs btn-icon rounded-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علایق">
                       <i class="bi-heart"></i>
                     </button>
                   </div>
+                  {% endif %}
                 </div>
 
                 <div class="card-body">
