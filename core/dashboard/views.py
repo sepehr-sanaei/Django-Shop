@@ -8,7 +8,6 @@ from accounts.models import UserType
 class DashboardHomeView(LoginRequiredMixin, View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            print(f"User type: {request.user.type}")  # Debugging line
             if request.user.type == UserType.admin.value:
                 return redirect(reverse_lazy('dashboard:admin:home'))
             elif request.user.type == UserType.customer.value:
