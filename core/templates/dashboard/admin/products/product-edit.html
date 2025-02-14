@@ -1,0 +1,156 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+        
+    
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb breadcrumb-light mb-0">
+                    <li class="breadcrumb-item">حساب</li>
+                    <li class="breadcrumb-item">داشبورد ادمین</li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                      ویرایش محصول
+                    </li>
+                  </ol>
+                </nav>
+                <!-- End Breadcrumb -->
+              </div>
+              <!-- End Col -->
+    
+              
+{% endblock %}
+{% block content %}
+<!-- Card -->
+<div class="card">
+    <div class="card">
+        <!-- Header -->
+        <div class="card-header border-bottom d-flex justify-content-between items-align-center">
+          <h5 class="card-header-title">ویرایش محصول</h5>
+          {% if object.is_published %}
+          <a class="btn btn-sm btn-primary ms-2" href="{% url 'shop:product_detail' slug=object.slug %}">نمایش محصول</i></a>
+          {% endif %}
+        </div>
+        <!-- End Header -->
+
+        <!-- Body -->
+        <form action="." method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="row d-flex ">
+              <div class="col-md-6 mb-3">
+                <label for="id_title">نام محصول</label>
+                {{form.title}}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="id_slug">slug محصول</label>
+                {{form.slug}}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label >تعداد</label>
+                {{form.stock}}
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label >وضعیت</label>
+                {{form.status}}
+              </div>
+              <div class="col-md-6 mb-3">
+                <label >دسته بندی</label>
+                {{form.category}}
+              </div>
+              <div class="col-md-4 mb-3">
+                <label >قیمت</label>
+                {{form.price}}
+              </div>
+              <div class="col-md-2 mb-3">
+                <label >درصد تخفیف</label>
+                {{form.discount_percent}}
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label >توضیحات کوتاه</label>
+                {{form.brief_description}}
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label >توضیحات</label>
+                {{form.description}}
+              </div>
+
+              <div class="col-md-12 mb-3">
+                <label>تصویر محصول</label>
+                <!-- File input for image -->
+                {{ form.image }}
+            
+                <!-- Image preview -->
+                <div id="imagePreviewContainer" class="mt-2" style="display:none; max-width: 300px; max-height: 300px; overflow: hidden;">
+                    <img id="imagePreview" src="" alt="Image Preview" style="width: 100%; height: auto;">
+                </div>
+            </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class=" d-flex pt-5 justify-content-end">
+                <a href="{% url 'dashboard:admin:product-delete' pk=object.pk %}" class="btn btn-danger ms-3">حذف</a>
+                <a class="btn btn-secondary ms-3" href="{% url 'dashboard:admin:product-list' %}">بازگشت</a>
+                <button type="submit" class="btn btn-primary ms-3">ثبت تغییرات</button>
+            </div>
+        </form>
+      </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the title and slug input elements
+        const titleInput = document.getElementById('id_title');
+        const slugInput = document.getElementById('id_slug');
+
+        // Function to slugify the title input, supporting Persian characters
+        function slugify(text) {
+            // Normalize to remove accents and convert to lowercase
+            let slugified = text
+                .toString()
+                .normalize('NFD')  // Normalize to remove diacritical marks (accents)
+                .toLowerCase()     // Convert to lowercase
+                .replace(/[^a-z0-9\s\u0600-\u06FF\-]/g, '')  // Allow Persian chars (Unicode range for Persian: \u0600-\u06FF)
+                .replace(/\s+/g, '-')    // Replace spaces with hyphens
+                .replace(/-+/g, '-');    // Replace multiple hyphens with one
+
+            // Return the slug directly (without URL encoding)
+            return slugified;
+        }
+
+        // Add an event listener to the title input
+        titleInput.addEventListener('input', function() {
+            // Update the slug field with the slugified version of the title
+            slugInput.value = slugify(titleInput.value);
+        });
+    });
+
+    document.getElementById('id_image').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        var file = event.target.files[0];
+
+        if (file) {
+            // When a file is selected, show the preview
+            reader.onload = function(e) {
+                var imagePreview = document.getElementById('imagePreview');
+                var imagePreviewContainer = document.getElementById('imagePreviewContainer');
+                
+                // Set the src attribute of the img tag to the file data
+                imagePreview.src = e.target.result;
+
+                // Show the preview container
+                imagePreviewContainer.style.display = 'block';
+            };
+
+            // Read the file as a data URL
+            reader.readAsDataURL(file);
+        }
+    });
+
+</script>
+{% endblock extra_js %}
