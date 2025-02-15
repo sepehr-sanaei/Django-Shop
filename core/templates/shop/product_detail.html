@@ -15,9 +15,12 @@
                   <!-- Slide -->
                   <div class="swiper-slide">
                     <div class="card card-bordered shadow-none">
-                      <img class="card-img" src="{{object.image.url}}" alt="Image Description">
+                      <img class="card-img img-fluid" src="{{object.image.url}}" alt="Image Description" 
+                           style="width: 650px; height: 500px; object-fit: cover; object-position: center;">
                     </div>
                   </div>
+                  
+                  
                   <!-- End Slide -->
                 </div>
 
@@ -86,33 +89,6 @@
           {% endif %}
           <!-- End Price -->
 
-          <!-- Quantity -->
-          <div class="quantity-counter mb-3">
-            <div class="js-quantity-counter row align-items-center">
-              <div class="col">
-                <span class="d-block small">تعداد را انتخاب کنید</span>
-                <input class="js-result form-control form-control-quantity-counter" type="text" value="1">
-              </div>
-              <!-- End Col -->
-
-              <div class="col-auto">
-                <a class="js-minus btn btn-outline-secondary btn-xs btn-icon rounded-circle" href="javascript:;">
-                  <svg width="8" height="2" viewBox="0 0 8 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 1C0 0.723858 0.223858 0.5 0.5 0.5H7.5C7.77614 0.5 8 0.723858 8 1C8 1.27614 7.77614 1.5 7.5 1.5H0.5C0.223858 1.5 0 1.27614 0 1Z" fill="currentColor" />
-                  </svg>
-                </a>
-                <a class="js-plus btn btn-outline-secondary btn-xs btn-icon rounded-circle" href="javascript:;">
-                  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 0C4.27614 0 4.5 0.223858 4.5 0.5V3.5H7.5C7.77614 3.5 8 3.72386 8 4C8 4.27614 7.77614 4.5 7.5 4.5H4.5V7.5C4.5 7.77614 4.27614 8 4 8C3.72386 8 3.5 7.77614 3.5 7.5V4.5H0.5C0.223858 4.5 0 4.27614 0 4C0 3.72386 0.223858 3.5 0.5 3.5H3.5V0.5C3.5 0.223858 3.72386 0 4 0Z" fill="currentColor" />
-                  </svg>
-                </a>
-              </div>
-              <!-- End Col -->
-            </div>
-            <!-- End Row -->
-          </div>
-          <!-- End Quantity -->
-
           <!-- Accordion -->
           <div class="accordion mb-5" id="shopCartAccordion">
             <!-- Collapse -->
@@ -172,7 +148,7 @@
           <!-- End Accordion -->
 
           <div class="d-grid mb-4">
-            <button type="button" class="btn btn-primary btntransition">افزودن به سبد خرید</button>
+            <button type="button" class="btn btn-primary btntransition" onclick="addToCart('{{object.id}}')">افزودن به سبد خرید</button>
           </div>
 
           <!-- Media -->
@@ -584,3 +560,27 @@
     <!-- End Subscribe -->
 
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  function addToCart(product_id){
+    // console.log(product_id)
+    $.ajax({
+      url: "{% url 'cart:session-add-product' %}",
+      method: "POST",
+      data: {
+        product_id: product_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (response) {
+        $("#total-cart-item-count").text(response.total_quantity);
+        console.log(response);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      }
+    })
+  }
+
+</script>
+{% endblock extra_js %}

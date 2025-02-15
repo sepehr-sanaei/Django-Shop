@@ -180,7 +180,12 @@
               <!-- Card -->
               <div class="card card-bordered shadow-none text-center h-100">
                 <div class="card-pinned">
-                  <img class="card-img-top" src="{{object.image.url}}" alt="Image Description">
+                  <div class="swiper-slide">
+                    <div class="card card-bordered shadow-none">
+                      <img class="card-img img-fluid" src="{{object.image.url}}" alt="Image Description" 
+                           style="width: 400px; height: 400px; object-fit: cover; object-position: center;">
+                    </div>
+                  </div>
 
                   {% if request.user.is_authenticated %}
                   <div class="card-pinned-top-end">
