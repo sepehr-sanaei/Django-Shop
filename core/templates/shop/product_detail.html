@@ -13,12 +13,14 @@
               <div class="js-swiper-shop-product swiper">
                 <div class="swiper-wrapper">
                   <!-- Slide -->
+                  {% for image in product.get_images %}
                   <div class="swiper-slide">
                     <div class="card card-bordered shadow-none">
                       <img class="card-img img-fluid" src="{{object.image.url}}" alt="Image Description" 
                            style="width: 650px; height: 500px; object-fit: cover; object-position: center;">
                     </div>
                   </div>
+                  {% endfor %}
                   
                   
                   <!-- End Slide -->
@@ -178,7 +180,7 @@
     <!-- Content -->
     <div class="container content-space-t-2 content-space-md-3">
       <div class="row">
-      {{object.description}}
+      {{object.description|safe}}
         <!-- End Col -->
       </div>
       <!-- End Row -->

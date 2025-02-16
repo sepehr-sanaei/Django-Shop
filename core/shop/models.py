@@ -1,6 +1,7 @@
 from django.db import models
 from decimal import Decimal
 from django.core.validators import MaxValueValidator, MinValueValidator
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 
@@ -28,7 +29,7 @@ class ProductModel(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(allow_unicode=True, unique=True)
     image = models.ImageField(default="/default/product-image.png",upload_to="product/img/")
-    description = models.TextField()
+    description = RichTextField()
     brief_description = models.TextField(null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
     status = models.IntegerField(choices=ProductStatusType.choices, default=ProductStatusType.draft.value)
@@ -65,8 +66,11 @@ class ProductModel(models.Model):
     def is_published(self):
         return self.status == ProductStatusType.publish.value
     
+    def get_images(self):
+        return self.images.all()
+    
 class ProductImageModel(models.Model):
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name="images")
     file = models.ImageField(upload_to="product/extra-img/")
     
     

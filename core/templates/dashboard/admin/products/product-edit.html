@@ -36,6 +36,7 @@
         <!-- Body -->
         <form action="." method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form.media }}
         <div class="card-body">
             <div class="row d-flex ">
               <div class="col-md-6 mb-3">

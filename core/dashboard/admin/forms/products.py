@@ -1,5 +1,18 @@
 from django import forms
-from shop.models import ProductModel
+from shop.models import ProductModel, ProductImageModel
+
+
+
+class ProductImageForm(forms.ModelForm):
+    # Using FileField without ClearableFileInput
+    file = forms.FileField()
+
+    class Meta:
+        model = ProductImageModel
+        fields = ['product', 'file']
+
+
+
 class ProductEdit(forms.ModelForm):
     class Meta:
         model = ProductModel
