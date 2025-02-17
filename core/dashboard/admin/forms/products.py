@@ -4,13 +4,18 @@ from shop.models import ProductModel, ProductImageModel
 
 
 class ProductImageForm(forms.ModelForm):
-    # Using FileField without ClearableFileInput
-    file = forms.FileField()
+
 
     class Meta:
         model = ProductImageModel
-        fields = ['product', 'file']
-
+        fields = [
+            "file",
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['file'].widget.attrs['class'] = 'form-control'
+        self.fields['file'].widget.attrs['accept'] = 'image/png, image/jpg, image/jpeg'
 
 
 class ProductEdit(forms.ModelForm):

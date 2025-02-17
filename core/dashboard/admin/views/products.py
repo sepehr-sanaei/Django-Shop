@@ -7,10 +7,11 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from dashboard.permissions import HasAdminAccessPermission
 from django.contrib.auth import views as auth_views
-from dashboard.admin.forms import AdminPasswordChangeForm, ProductEdit
+from dashboard.admin.forms import AdminPasswordChangeForm, ProductEdit, ProductImageForm
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from shop.models import ProductModel, ProductCategoryModel
+from shop.models import ProductModel, ProductCategoryModel, ProductImageModel
+from django.contrib import messages
 # Create your views here.
 
 
@@ -82,3 +83,43 @@ class AdminProductDeleteView(LoginRequiredMixin, HasAdminAccessPermission, Succe
     queryset = ProductModel.objects.all()
     success_message = "محصول مورد نظر با موفقیت حذف شد"
     success_url = reverse_lazy("dashboard:admin:product-list")
+    
+
+
+class AdminProductAddImageView(LoginRequiredMixin, HasAdminAccessPermission, CreateView):
+    http_method_names = ['post']
+    form_class = ProductImageForm
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard:admin:product-edit', kwargs={'pk': self.kwargs.get('pk')})
+
+    def form_valid(self, form):
+        product_id = self.kwargs.get('pk')
+        try:
+            product = ProductModel.objects.get(pk=product_id)
+            form.instance.product = product
+            form.save()  # Explicitly save the form
+            messages.success(self.request, 'تصویر مورد نظر با موفقیت ثبت شد')
+            return redirect(self.get_success_url())
+        except ProductModel.DoesNotExist:
+            messages.error(self.request, 'محصول مورد نظر یافت نشد')
+            return redirect(self.get_success_url())
+
+
+class AdminProductRemoveImageView(LoginRequiredMixin, HasAdminAccessPermission, SuccessMessageMixin, DeleteView):
+    http_method_names = ["post"]
+    success_message = "تصویر مورد نظر با موفقیت حذف شد"
+
+    def get_queryset(self):
+        return ProductImageModel.objects.filter(product__id=self.kwargs.get('pk'))
+    
+    def get_object(self, queryset=None):
+        return self.get_queryset().get(pk=self.kwargs.get('image_id'))
+
+    def get_success_url(self):
+        return reverse_lazy('dashboard:admin:product-edit', kwargs={'pk': self.kwargs.get('pk')})
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request, 'اشکالی در حذف تصویر رخ داد لطفا مجدد امتحان نمایید')
+        return redirect(reverse_lazy('dashboard:admin:product-edit', kwargs={'pk': self.kwargs.get('pk')}))

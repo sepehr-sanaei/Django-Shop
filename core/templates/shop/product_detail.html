@@ -13,14 +13,34 @@
               <div class="js-swiper-shop-product swiper">
                 <div class="swiper-wrapper">
                   <!-- Slide -->
-                  {% for image in product.get_images %}
-                  <div class="swiper-slide">
-                    <div class="card card-bordered shadow-none">
-                      <img class="card-img img-fluid" src="{{object.image.url}}" alt="Image Description" 
-                           style="width: 650px; height: 500px; object-fit: cover; object-position: center;">
-                    </div>
-                  </div>
-                  {% endfor %}
+                  <!-- Swiper Main Slider for Product Images -->
+<div class="js-swiper-product-images swiper">
+  <div class="swiper-wrapper">
+    <!-- Loop through product images -->
+    {% for product_image in object.product_images.all %}
+    <div class="swiper-slide">
+      <img class="avatar-img" src="{{ product_image.file.url }}" alt="Image Description">
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Swiper Arrows -->
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+</div>
+
+<!-- Swiper Thumb Slider -->
+<div class="js-swiper-thumb swiper" style="max-width: 15rem;">
+  <div class="swiper-wrapper">
+    <!-- Loop through product images again for thumbnail navigation -->
+    {% for product_image in object.product_images.all %}
+    <div class="swiper-slide">
+      <img class="avatar-img" src="{{ product_image.file.url }}" alt="Image Thumbnail">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
                   
                   
                   <!-- End Slide -->
@@ -585,4 +605,33 @@
   }
 
 </script>
+
+<script>
+  // Initialize Swiper for main product image slider
+  var swiperProduct = new Swiper('.js-swiper-product-images', {
+    loop: true, // Enable loop
+    spaceBetween: 10, // Space between slides
+    navigation: {
+      nextEl: '.swiper-button-next', // Next slide button
+      prevEl: '.swiper-button-prev'  // Previous slide button
+    },
+    autoplay: {
+      delay: 2500, // Autoplay interval (2.5 seconds)
+      disableOnInteraction: false // Continue autoplay after user interaction
+    }
+  });
+
+  // Initialize Swiper for thumbnail navigation
+  var swiperThumb = new Swiper('.js-swiper-thumb', {
+    spaceBetween: 10, // Space between thumbnail slides
+    slidesPerView: 4, // Show 4 thumbnails at once
+    freeMode: true, // Allow for free scrolling
+    watchSlidesProgress: true // Sync thumbnail navigation with main image swiper
+  });
+
+  // Connect main swiper with thumbnail swiper for synced navigation
+  swiperProduct.controller.control = swiperThumb;
+  swiperThumb.controller.control = swiperProduct;
+</script>
+
 {% endblock extra_js %}
