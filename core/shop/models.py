@@ -69,6 +69,9 @@ class ProductModel(models.Model):
     def get_images(self):
         return self.images.all()
     
+    def __str__(self) -> str:
+        return self.title
+    
 class ProductImageModel(models.Model):
     product = models.ForeignKey(ProductModel,on_delete=models.CASCADE,related_name="product_images")
     file = models.ImageField(upload_to="product/extra-img/")

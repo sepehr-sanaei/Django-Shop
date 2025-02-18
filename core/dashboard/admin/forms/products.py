@@ -4,8 +4,7 @@ from shop.models import ProductModel, ProductImageModel
 
 
 class ProductImageForm(forms.ModelForm):
-
-
+    # adding additional images to a product
     class Meta:
         model = ProductImageModel
         fields = [
@@ -47,3 +46,6 @@ class ProductEdit(forms.ModelForm):
         self.fields['status'].widget.attrs['class'] = "form-select"
         self.fields['price'].widget.attrs['class'] = "form-control"
         self.fields['discount_percent'].widget.attrs['class'] = "form-control"
+        
+        
+        
